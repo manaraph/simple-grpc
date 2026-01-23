@@ -8,13 +8,11 @@ Make sure the following tools are installed on your system:
 * protoc (Protocol Buffers compiler)
 * protoc-gen-go
 * protoc-gen-go-grpc
-* golangci-lint (optional, for linting)
 
 Install Go plugins:
 ```
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-
 ```
 Make sure $GOPATH/bin is in your PATH.
 
@@ -35,7 +33,6 @@ make -B proto
 ```
 make run
 make run-client
-
 ```
 Runs the server and client respectively.
 
@@ -46,10 +43,7 @@ make clean
 Removes generated files and build artifacts.
 
 ## Troubleshooting
-Install make if you see:
-`
-make: command not found
-`
+Install make if you see: `make: command not found`
 
 If protoc fails, verify:
 
