@@ -1,7 +1,3 @@
-# Clean generated files
-clean:
-	rm -f proto/*.pb.go
-	
 # Generate proto files
 proto: 
 	protoc \
@@ -16,3 +12,9 @@ run:
 # Run client
 run-client: 
 	go run client/main.go
+
+
+# Clean generated files
+clean:
+	rm -f proto/*.pb.go
+	
