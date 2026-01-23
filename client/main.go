@@ -1,0 +1,78 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"time"
+
+	pb "github.com/manaraph/grpc-implementation/proto"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+)
+
+func main() {
+	// Connect to the gRPC server
+	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient("localhost:8080", opts...)
+	if err != nil {
+		log.Fatalf("Failed to connect: %v", err)
+	}
+	defer conn.Close()
+
+	client := pb.NewPersonServiceClient(conn)
+
+	// Timeout for context
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	// Example 1: Create a new person
+	fmt.Println("Creating a new person...")
+	createReq := &pb.CreatePersonRequest{
+		Name:        "John Wick",
+		Email:       "john.wick@email.com",
+		PhoneNumber: "1234567890",
+	}
+	createRes, err := client.Create(ctx, createReq)
+	if err != nil {
+		log.Fatalf("Error creating person: %v", err)
+	}
+	fmt.Printf("Person created: %+v\n", createRes)
+
+	// Example 2: Read created person by ID
+	fmt.Println("Reading person by ID ...")
+	readReq := &pb.SinglePersonRequest{
+		Id: createRes.GetId(),
+	}
+	readRes, err := client.Read(ctx, readReq)
+	if err != nil {
+		log.Fatalf("Error reading person: %v", err)
+	}
+	fmt.Printf("Person details: %+v\n", readRes)
+
+	// Example 3: Update person details
+	fmt.Println("Updating person...")
+	updateReq := &pb.UpdatePersonRequest{
+		Id:          createRes.GetId(),
+		Name:        "Luke Skywalker",
+		Email:       "luke.skywalker@email.com",
+		PhoneNumber: "9876543210",
+	}
+	updateRes, err := client.Update(ctx, updateReq)
+	if err != nil {
+		log.Fatalf("Error updating person: %v", err)
+	}
+	fmt.Printf("Person updated: %s\n", updateRes.GetResponse())
+
+	// Example 4: Delete person by ID
+	fmt.Println("Deleting person...")
+	deleteReq := &pb.SinglePersonRequest{
+		Id: createRes.GetId(),
+	}
+	deleteRes, err := client.Delete(ctx, deleteReq)
+	if err != nil {
+		log.Fatalf("Error deleting person: %v", err)
+	}
+	fmt.Printf("Delete response: %s\n", deleteRes.GetResponse())
+}
