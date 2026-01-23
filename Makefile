@@ -13,7 +13,6 @@ run:
 run-client: 
 	go run client/main.go
 
-
 # Clean generated files
 clean:
 	rm -f proto/*.pb.go
