@@ -1,4 +1,4 @@
-# A basic grpc implementation
+# A simple grpc implementation
 This project implements grpc with golang and uses a Makefile to standardize common development tasks such as generating protobuf files, linting, and building the application.
 
 ## Requirements
