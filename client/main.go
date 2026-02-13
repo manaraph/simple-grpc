@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	pb "github.com/manaraph/grpc-implementation/proto"
+	pb "github.com/manaraph/simple-grpc/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
